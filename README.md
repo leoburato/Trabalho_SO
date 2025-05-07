@@ -6,7 +6,7 @@ Antes de compilar e executar o código, é necessário alterar os caminhos de en
 
 Entrada:
 ```
-FILE* arquivo = fopen("caminho_do_csv", "r");
+FILE* arquivo = fopen("_caminho_do_csv_", "r");
 if (!arquivo) {
     perror("Erro ao abrir o arquivo");
     return 1;
@@ -14,7 +14,7 @@ if (!arquivo) {
 ```
 Saída:
 ```
-FILE* output = fopen("saida_do_csv", "w");
+FILE* output = fopen("_saida_do_csv_", "w");
 fprintf(output, "device;ano-mes;sensor;valor_maximo;valor_medio;valor_minimo\n");
 for (int i = 0; i < stats_index; i++) {
     fprintf(output, "%s;%s;%s;%.2f;%.2f;%.2f\n",
@@ -45,12 +45,15 @@ Cada thread processa seu subconjunto de registros e realiza a análise estatíst
 Para evitar condições de corrida, o acesso à estrutura StatusMes, onde os resultados são agregados, é protegido com mutexes. As threads não escrevem no arquivo final — apenas atualizam os dados estatísticos de forma segura e paralela.
 
 **Geração do CSV de Saída**
+
 Após todas as threads finalizarem, a thread principal ordena o vetor StatusMes usando qsort, priorizando a ordenação por ano_mes e depois por device. Em seguida, escreve os resultados no arquivo de saída em formato CSV.
 
 **Execução das Threads**
+
 As threads criadas são executadas em modo núcleo, aproveitando o paralelismo proporcionado pelos múltiplos núcleos do processador.
 
 **Possíveis Ineficiências**
+
 Uma possível ineficiência do programa é o uso intensivo de mutexes na atualização da estrutura compartilhada, o que pode causar contenção entre threads e reduzir os ganhos do paralelismo. Além disso, a busca linear por combinações de device, ano_mes e sensor dentro de StatusMes pode tornar-se lenta à medida que o número de registros aumenta, impactando o desempenho geral do processamento.
 
 
