@@ -125,7 +125,7 @@ int main() {
     int num_threads = get_nprocs();
     printf("Utilizando %d threads\n", num_threads);
 
-    FILE* arquivo = fopen("/home/leoburato/Documents/devices.csv", "r");
+    FILE* arquivo = fopen("caminho_do_csv", "r");
     if (!arquivo) {
         perror("Erro ao abrir o arquivo");
         return 1;
@@ -204,7 +204,7 @@ int main() {
     qsort(stats, stats_index, sizeof(StatusMes), comparar_statusmes);
 
 
-    FILE* output = fopen("/home/leoburato/Documents/output.csv", "w");
+    FILE* output = fopen("saida_do_csv", "w");
     fprintf(output, "device;ano-mes;sensor;valor_maximo;valor_medio;valor_minimo\n");
     for (int i = 0; i < stats_index; i++) {
         fprintf(output, "%s;%s;%s;%.2f;%.2f;%.2f\n",
